@@ -4,20 +4,17 @@ from tensorflow.keras import layers
 
 def build_feed_forward(hidden_layers):
     """
-    Создает последовательную (Sequential) Feed Forward сеть с указанным списком hidden_layers,
-    где каждый элемент списка = количество нейронов в слое.
-    Предполагается вход размером (2,) и выход 1.
+    Створює Feed Forward нейромережу з вказаною кількістю нейронів у прихованих шарах.
     """
     model = keras.Sequential()
-    # Входной слой: 2 признака (x, y)
-    model.add(layers.Input(shape=(2,)))
+    model.add(keras.Input(shape=(2,)))  # Вхідний шар на 2 нейрони (x, y)
     
-    # Добавляем скрытые слои
     for units in hidden_layers:
         model.add(layers.Dense(units, activation='relu'))
     
-    # Выходной слой (1 нейрон, линейная активация)
-    model.add(layers.Dense(1, activation='linear'))
+    model.add(layers.Dense(1))  # Вихідний шар (1 нейрон)
     
-    model.compile(optimizer='adam', loss='mse')
+    # Додаємо loss='mse', щоб зберігати loss у history
+    model.compile(optimizer='adam', loss='mse', metrics=['mse'])
+    
     return model
